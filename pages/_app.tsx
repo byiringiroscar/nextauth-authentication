@@ -1,13 +1,26 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import { getServerSession } from 'next-auth';
+import { useState, useEffect } from 'react';
+import { getServerSession, Session } from 'next-auth'; // Import the Session type
 import Link from 'next/link'
 import Logout from './logout'
 
+export default function App({ Component, pageProps }: AppProps) {
+  const [session, setSession] = useState<Session | null>(null); // Specify the type
 
-export default async function App({ Component, pageProps }: AppProps) {
-  const session = await getServerSession(pageProps.req);
+  useEffect(() => {
+    async function getSession() {
+      try {
+        const serverSession = await getServerSession();
+        setSession(serverSession);
+      } catch (error) {
+        console.error('Error while fetching session:', error);
+      }
+    }
 
+    getSession();
+  }, []);
+  console.log(session)
   return (
     <div>
       <nav>
@@ -16,5 +29,5 @@ export default async function App({ Component, pageProps }: AppProps) {
       </nav>
       <Component {...pageProps} />
     </div>
-  )
+  );
 }
