@@ -11,10 +11,11 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     async function getSession() {
       try {
-        const serverSession = await getServerSession();
+        const serverSession: any = await getServerSession();
         setSession(serverSession);
       } catch (error) {
         console.error('Error while fetching session:', error);
+        setSession(null);
       }
     }
 
