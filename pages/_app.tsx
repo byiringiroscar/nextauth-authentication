@@ -6,7 +6,11 @@ import Link from 'next/link'
 import Logout from './logout'
 import authOptions from "./api/auth/[...nextauth]";
 
-export default async function App({ Component, pageProps, session }: AppProps) {
+type CustomAppProps = AppProps & {
+  session: any;
+}
+
+export default function App({ Component, pageProps, session }: CustomAppProps) {
   return (
     <div>
       <nav>
