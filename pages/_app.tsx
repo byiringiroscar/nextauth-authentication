@@ -1,27 +1,12 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useState, useEffect } from 'react';
-import { getServerSession, Session } from 'next-auth'; // Import the Session type
+import { getServerSession } from "next-auth/next"
 import Link from 'next/link'
 import Logout from './logout'
+import authOptions from "./api/auth/[...nextauth]";
 
-export default function App({ Component, pageProps }: AppProps) {
-  const [session, setSession] = useState<Session | null>(null); // Specify the type
-
-  useEffect(() => {
-    async function getSession() {
-      try {
-        const serverSession: any = await getServerSession();
-        setSession(serverSession);
-      } catch (error) {
-        console.error('Error while fetching session:', error);
-        setSession(null);
-      }
-    }
-
-    getSession();
-  }, []);
-  console.log(session)
+export default async function App({ Component, pageProps, session }: AppProps) {
   return (
     <div>
       <nav>
@@ -32,3 +17,14 @@ export default function App({ Component, pageProps }: AppProps) {
     </div>
   );
 }
+
+
+
+export async function getServerSideProps(context: any) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  return {
+    props: { session }
+  }
+}
+
+
