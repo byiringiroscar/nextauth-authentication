@@ -7,7 +7,7 @@ const Navbar = () => {
 const { data: session } = useSession();
   return (
     <nav>
-      {session && ( <Link href="#" onClick={() => signOut()} >SignOut</Link>)}
+      {session && ( <Logout /> )}
       {!session && ( <Link href='/login'>Login</Link>)}
     </nav>
   );
